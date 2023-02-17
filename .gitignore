@@ -28,6 +28,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 qrcodes
+qrcodes.zip
 会员卡.xlsx
 
 # PyInstaller

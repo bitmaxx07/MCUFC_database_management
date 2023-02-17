@@ -3,29 +3,23 @@ import openpyxl
 import qrcode
 import PIL
 
-key = "secret"
-# encoded = jwt.encode({"chengqi": ""}, key, algorithm="HS256")
-# print(encoded.replace(".", "-"))
-# print(encoded.replace(".", "-")[0: 75].lower())
-
-# print(jwt.decode(encoded, key, algorithms="HS256"))
+key = "VIP"
 
 id_dict = {}
 
 wb = openpyxl.load_workbook("会员卡.xlsx")
-ws = wb["Fussball Mitgliederlist"]
+ws = wb["VIP"]
 
 col_lastname = 1
 col_firstname = 2
-col_birthday = 3
-col_id = 4
-col_subname = 6
-col_website = 5
-col_num = 7
+col_id = 3
+col_subname = 5
+col_website = 4
+col_num = 6
 
 for row in range(1, ws.max_row + 1):
     # fill in excel sheet and generate id mapping
-    ws.cell(row, col_num).value = "0" + str(1000000 + row)
+    ws.cell(row, col_num).value = "0" + str(2000000 + row)
     code_string = ws.cell(row, col_lastname).value + "_" + \
                   ws.cell(row, col_firstname).value + "_" + \
                   str(ws.cell(row, col_num).value)
@@ -38,6 +32,7 @@ for row in range(1, ws.max_row + 1):
     print("id: " + ws.cell(row, col_id).value)
     print("subname: " + ws.cell(row, col_subname).value)
     print("website: " + ws.cell(row, col_website).value)
+    print("personal ID: " + ws.cell(row, col_num).value)
     print("----------------------------")
 
     # generate qr codes
