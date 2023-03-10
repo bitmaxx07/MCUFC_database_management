@@ -30,6 +30,7 @@ MANIFEST
 qrcodes
 qrcodes.zip
 会员卡.xlsx
+*.xlsx
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

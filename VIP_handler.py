@@ -27,7 +27,7 @@ for row in range(1, ws.max_row + 1):
     ws.cell(row, col_id).value = encoded
     ws.cell(row, col_subname).value = encoded.replace(".", "-")[0: 75].lower()
     id_dict.update({code_string: encoded.replace(".", "-")[0: 75].lower()})
-    ws.cell(row, col_website).value = "https://www.csm-ev.com/" + encoded.replace(".", "-")[0: 75].lower()
+    ws.cell(row, col_website).value = "https://www.csm-ev.com/members/vip/" + encoded.replace(".", "-")[0: 75].lower()
     print("name/personal ID: " + code_string)
     print("id: " + ws.cell(row, col_id).value)
     print("subname: " + ws.cell(row, col_subname).value)
@@ -36,7 +36,7 @@ for row in range(1, ws.max_row + 1):
     print("----------------------------")
 
     # generate qr codes
-    input_data = "https://www.csm-ev.com/" + encoded.replace(".", "-")[0: 75].lower()
+    input_data = "https://www.csm-ev.com/members/vip/" + encoded.replace(".", "-")[0: 75].lower()
     qr = qrcode.QRCode(version=1, box_size=10, border=0)
     qr.add_data(input_data)
     qr.make(fit=True)
