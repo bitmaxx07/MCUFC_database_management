@@ -12,7 +12,7 @@ key = "secret"
 
 id_dict = {}
 
-wb = openpyxl.load_workbook("会员卡_20220308.xlsx")
+wb = openpyxl.load_workbook("会员卡(1).xlsx")
 # CONFIGURE HERE
 ws = wb["Fussball Mitgliederlist"]
 wb_id = openpyxl.load_workbook("MemberID.xlsx")
@@ -55,25 +55,30 @@ for row in range(1, ws.max_row + 1):
                     else:
                         ws_id.cell(r, col_checknum).value += 1
 
-    '''if checkstring in id_mapping.keys():
+    # POTENTIAL PROBLEM HERE!!!
+    if checkstring in id_mapping.keys():
         ws.cell(row, col_num).value = checkstring + "{:02d}".format(id_mapping[checkstring])
     else:
-        ws.cell(row, col_num).value = checkstring + "00"'''
+        ws.cell(row, col_num).value = checkstring + "00"
+
     code_string = ws.cell(row, col_lastname).value + "_" + \
-                  ws.cell(row, col_firstname).value + "_" + \
-                  str(ws.cell(row, col_num).value)
+                  ws.cell(row, col_firstname).value + "_" + ws.cell(row, col_num).value
     encoded = jwt.encode({code_string: ""}, key, algorithm="HS256")
     ws.cell(row, col_id).value = encoded
-    ws.cell(row, col_subname).value = encoded.replace(".", "-")[0: 75].lower()
-    id_dict.update({code_string: encoded.replace(".", "-")[0: 75].lower()})
-    ws.cell(row, col_website).value = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[0: 75].lower()
+    ws.cell(row, col_subname).value = encoded.replace(".", "-")[-75:].lower()
+    id_dict.update({code_string: encoded.replace(".", "-")[-75:].lower()})
+    ws.cell(row, col_website).value = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[-75:].lower()
 
-    temp_maxrow = ws_id.max_row + 1
-    ws_id.cell(temp_maxrow, col_lastname).value = ws.cell(row, col_lastname).value
-    ws_id.cell(temp_maxrow, col_firstname).value = ws.cell(row, col_firstname).value
-    ws_id.cell(temp_maxrow, col_birthday).value = str(ws.cell(row, col_birthday).value.strftime('%y%m%d'))
-    ws_id.cell(temp_maxrow, col_id).value = checkstring
-    wb_id.save("MemberID.xlsx")
+    name_list = []
+    for r in range(2, ws_id.max_row + 1):
+        name_list.append(ws_id.cell(r, 1).value + ws_id.cell(r, 2).value)
+    if ws.cell(row, col_lastname).value + ws.cell(row, col_firstname).value not in name_list:
+        temp_maxrow = ws_id.max_row + 1
+        ws_id.cell(temp_maxrow, col_lastname).value = ws.cell(row, col_lastname).value
+        ws_id.cell(temp_maxrow, col_firstname).value = ws.cell(row, col_firstname).value
+        ws_id.cell(temp_maxrow, col_birthday).value = str(ws.cell(row, col_birthday).value.strftime('%y%m%d'))
+        ws_id.cell(temp_maxrow, col_id).value = checkstring
+        wb_id.save("MemberID.xlsx")
 
     print("name/personal ID: " + code_string)
     print("id: " + ws.cell(row, col_id).value)
@@ -82,7 +87,7 @@ for row in range(1, ws.max_row + 1):
     print("----------------------------")
 
     # generate qr codes
-    input_data = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[0: 75].lower()
+    input_data = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[-75:].lower()
     qr = qrcode.QRCode(version=1, box_size=10, border=0)
     qr.add_data(input_data)
     qr.make(fit=True)
@@ -93,7 +98,7 @@ for row in range(1, ws.max_row + 1):
     print("------------------------")
 
 
-wb.save("会员卡_20220308.xlsx")
+wb.save("会员卡(1).xlsx")
 print("-----------FINISHED----------")
 print("TOTAL MAPPING:")
 for key in id_dict.keys():
