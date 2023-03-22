@@ -2,6 +2,71 @@ import jwt
 import openpyxl
 import qrcode
 import PIL
+from hashlib import sha256
+
+mDict = {
+    'a': 37,
+    'b': 39,
+    'c': 65,
+    'd': 54,
+    'e': 32,
+    'f': 76,
+    'g': 61,
+    'h': 87,
+    'i': 83,
+    'j': 11,
+    'k': 12,
+    'l': 57,
+    'm': 41,
+    'n': 91,
+    'o': 38,
+    'p': 69,
+    'q': 29,
+    'r': 13,
+    's': 74,
+    't': 45,
+    'u': 55,
+    'v': 28,
+    'w': 94,
+    'x': 97,
+    'y': 25,
+    'z': 20,
+    'A': 37,
+    'B': 39,
+    'C': 65,
+    'D': 54,
+    'E': 32,
+    'F': 76,
+    'G': 61,
+    'H': 87,
+    'I': 83,
+    'J': 11,
+    'K': 12,
+    'L': 57,
+    'M': 41,
+    'N': 91,
+    'O': 38,
+    'P': 69,
+    'Q': 29,
+    'R': 13,
+    'S': 74,
+    'T': 45,
+    'U': 55,
+    'V': 28,
+    'W': 94,
+    'X': 97,
+    'Y': 25,
+    'Z': 20,
+    '0': 8,
+    '1': 4,
+    '2': 6,
+    '3': 7,
+    '4': 3,
+    '5': 5,
+    '6': 0,
+    '7': 2,
+    '8': 9,
+    '9': 1}
 
 key = "secret"
 # encoded = jwt.encode({"chengqi": ""}, key, algorithm="HS256")
@@ -12,7 +77,7 @@ key = "secret"
 
 id_dict = {}
 
-wb = openpyxl.load_workbook("会员卡(1).xlsx")
+wb = openpyxl.load_workbook("会员卡_20230314.xlsx")
 # CONFIGURE HERE
 ws = wb["Fussball Mitgliederlist"]
 wb_id = openpyxl.load_workbook("MemberID.xlsx")
@@ -44,13 +109,15 @@ for row in range(1, ws.max_row + 1):
     print(id_mapping)
     # CONFIGURE HERE
     checkstring = "01" + ws.cell(row, col_lastname).value[0] + ws.cell(row, col_firstname).value[0] \
-                                  + ws.cell(row, col_birthday).value.strftime('%y%m%d')
+                  + ws.cell(row, col_birthday).value.strftime('%y%m%d')
 
     for k in id_mapping.keys():
         if checkstring == k:
             for r in range(2, ws_id.max_row + 1):
                 if ws_id.cell(r, col_id).value == checkstring:
-                    if ws_id.cell(r, col_lastname).value == ws.cell(row, col_lastname).value and ws_id.cell(r, col_firstname).value == ws.cell(row, col_firstname).value:
+                    if ws_id.cell(r, col_lastname).value == ws.cell(row, col_lastname).value and ws_id.cell(r,
+                                                                                                            col_firstname).value == ws.cell(
+                            row, col_firstname).value:
                         pass
                     else:
                         ws_id.cell(r, col_checknum).value += 1
@@ -67,7 +134,9 @@ for row in range(1, ws.max_row + 1):
     ws.cell(row, col_id).value = encoded
     ws.cell(row, col_subname).value = encoded.replace(".", "-")[-75:].lower()
     id_dict.update({code_string: encoded.replace(".", "-")[-75:].lower()})
-    ws.cell(row, col_website).value = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[-75:].lower()
+    ws.cell(row, col_website).value = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[
+                                                                                   -75:].lower()
+    ws.cell(row, 8).value = ''.join(str(mDict[c]) for c in ws.cell(row, col_num).value)
 
     name_list = []
     for r in range(2, ws_id.max_row + 1):
@@ -97,8 +166,7 @@ for row in range(1, ws.max_row + 1):
     print("saved QR code for " + code_string)
     print("------------------------")
 
-
-wb.save("会员卡(1).xlsx")
+wb.save("会员卡_20220314.xlsx")
 print("-----------FINISHED----------")
 print("TOTAL MAPPING:")
 for key in id_dict.keys():
