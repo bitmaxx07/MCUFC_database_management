@@ -156,7 +156,7 @@ for row in range(1, ws.max_row + 1):
     print("----------------------------")
 
     # generate qr codes
-    input_data = "https://www.csm-ev.com/members/football/" + encoded.replace(".", "-")[-75:].lower()
+    input_data = "https://www.csm-ev.com/members/vip/" + encoded.replace(".", "-")[-75:].lower()
     qr = qrcode.QRCode(version=1, box_size=10, border=0)
     qr.add_data(input_data)
     qr.make(fit=True)
