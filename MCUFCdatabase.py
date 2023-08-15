@@ -77,7 +77,7 @@ key = "secret"
 
 id_dict = {}
 
-wb = openpyxl.load_workbook("会员卡_20230314.xlsx")
+wb = openpyxl.load_workbook("会员卡_20230726.xlsx")
 # CONFIGURE HERE
 ws = wb["Fussball Mitgliederlist"]
 wb_id = openpyxl.load_workbook("MemberID.xlsx")
@@ -166,7 +166,7 @@ for row in range(1, ws.max_row + 1):
     print("saved QR code for " + code_string)
     print("------------------------")
 
-wb.save("会员卡_20220314.xlsx")
+wb.save("会员卡_20230726.xlsx")
 print("-----------FINISHED----------")
 print("TOTAL MAPPING:")
 for key in id_dict.keys():
