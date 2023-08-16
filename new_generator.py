@@ -97,12 +97,13 @@ def assign_id(worksheet):
         if worksheet.cell(row, col_num).value == "" or worksheet.cell(row, col_num).value is None:
             start_row = row
             break
+
     def check_duplicate_num(check_str):
         res = check_str
         if check_str in num_set:
             res = check_str[:-2] + str(generate_random_number())
             check_duplicate_num(res)
-        #if check_str not in num_set:
+        # if check_str not in num_set:
         return res
 
     if worksheet.title == "Fussball Mitgliederlist":
@@ -114,7 +115,10 @@ def assign_id(worksheet):
                     worksheet.cell(row, col_num).value = checkstring + str(generate_random_number())
             else:
                 worksheet.cell(row, col_num).value = checkstring + "00"'''
-            worksheet.cell(row, col_num).value = check_duplicate_num(checkstring + "00")
+            checkstring = check_duplicate_num(checkstring + "00")
+            print(checkstring)
+            num_set.add(checkstring)
+            worksheet.cell(row, col_num).value = checkstring
 
             print(worksheet.cell(row, col_lastname).value)
             print(worksheet.cell(row, col_firstname).value)
@@ -157,6 +161,7 @@ def assign_id(worksheet):
                 worksheet.cell(row, col_num).value = checkstring + "00"'''
             checkstring = check_duplicate_num(checkstring + "00")
             print(checkstring)
+            num_set.add(checkstring)
             worksheet.cell(row, col_num).value = checkstring
 
             print(worksheet.cell(row, col_lastname).value)
