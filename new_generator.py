@@ -82,7 +82,7 @@ col_num = 7
 
 
 def generate_random_number():
-    random_number = random.randint(1, 99)
+    random_number = random.randint(12, 99)
     if random_number % 10 != 1:
         return random_number
 
@@ -182,11 +182,13 @@ def assign_id(worksheet):
             print("------------------------")
 
 
-if input("f for football, v for vip: ") == "f":
+temp = input("f for football, v for vip: ")
+
+if temp == "f":
     ws = wb["Fussball Mitgliederlist"]
     assign_id(ws)
 
-elif input("f for football, v for vip: ") == "v":
+elif temp == "v":
     ws = wb["VIP"]
     assign_id(ws)
 
