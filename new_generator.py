@@ -173,16 +173,17 @@ def assign_id(worksheet):
             encoded = jwt.encode({code_string: ""}, key, algorithm="HS256")
             worksheet.cell(row, col_id).value = encoded
             worksheet.cell(row, col_subname).value = encoded.replace(".", "-")[-75:].lower()
-            worksheet.cell(row, col_website).value = "https://www.csm-ev.com/members/vip/" + \
+            worksheet.cell(row, col_website).value = "https://www.csm-ev.com/members/VIP/" + \
                                                      encoded.replace(".", "-")[-75:].lower()
             worksheet.cell(row, 8).value = ''.join(str(mDict[c]) for c in ws.cell(row, col_num).value)
 
-            input_data = "https://www.csm-ev.com/members/vip/" + encoded.replace(".", "-")[-75:].lower()
+            input_data = "https://www.csm-ev.com/members/VIP/" + encoded.replace(".", "-")[-75:].lower()
             qr = qrcode.QRCode(version=1, box_size=10, border=0)
             qr.add_data(input_data)
             qr.make(fit=True)
             img = qr.make_image(fill="black", back_color="white")
-            img.save("qrcodes_vip/" + code_string + ".png")
+            img.save("qrcodes_vip/" + worksheet.cell(row, col_lastname).value + "_" +
+                     worksheet.cell(row, col_firstname).value + "_" + worksheet.cell(row, 8).value + ".png")
             print("saved QR code for " + code_string)
             print("------------------------")
 
