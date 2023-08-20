@@ -68,9 +68,11 @@ mDict = {
     '8': 9,
     '9': 1}
 
-key = "secret"
 # TODO: CONFIGURE HERE!!!
-wb = openpyxl.load_workbook("会员卡_20230726.xlsx")
+filename = "会员卡_20230820_程琦_2.xlsx"
+
+key = "secret"
+wb = openpyxl.load_workbook(filename)
 
 col_lastname = 1
 col_firstname = 2
@@ -198,5 +200,4 @@ elif temp == "v":
     ws = wb["VIP"]
     assign_id(ws)
 
-# TODO: CONFIGURE HERE!!!
-wb.save("会员卡_20230726.xlsx")
+wb.save(filename)
